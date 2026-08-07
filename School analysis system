@@ -1,0 +1,47 @@
+    #include <stdio.h>
+    #include<stdlib.h>
+    #include<string.h>
+
+        typedef struct MateriaNota
+        {
+            float Nota1Bimestre;
+            float Nota2Bimestre;
+            float Nota3Bimestre;
+            float Nota4Bimestre;
+            char NomeMateria[51];
+
+        }MateriaNota;
+
+        typedef struct Relatorio
+        {
+            float GPA;
+            float Desvio;
+            int MaiorNota;
+            int MenorNota;
+            float MediaGeral;
+            int Aprovações;
+            int Reprovações;
+        };
+        
+        
+        int NotalTotal(int Nota1, int Nota2, int Nota3, int Nota4){
+            int Total;
+            Total = (Nota1 + Nota2 + Nota3 + Nota4);
+            return Total;
+        }
+
+        int MaiorNota()
+        int DesviodeNotaPadrao (int Nota1, int Nota2, int Nota3, int Nota4) {
+
+        }
+
+
+        
+
+    int main (void){
+
+
+
+
+        return 0;
+    }

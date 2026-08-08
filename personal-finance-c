@@ -6,58 +6,77 @@
         //information of the people
     typedef struct PeopleInformation
     {
-        float Gross_salary;
-        float Liquid_salary;
+        char Name[100];
+        float gross_salary;
+        float liquid_salary;
     }PeopleInformation;
     
     /* INSS:The INSS is Brazil's public social security system that collects monthly contributions from workers 
     to guarantee them income replacement, such as pensions, disability benefits, and maternity pay.*/
     typedef struct INSS
     {
-       float Percentage_rate;
-       float Fee_amount;
+       float percentage_rate;
+       float fee_amount;
     } INSS;
 
     /*IRRF (Imposto de Renda Retido na Fonte) is a monthly Brazilian tax automatically deducted from an employee's
      paycheck by the employer and paid directly to the government as an advance on their annual income tax.*/
     typedef struct IRRF
     {
-        float Percentage_rate;
-        float Fee_amount;
+        float percentage_rate;
+        float fee_amount;
     }IRRF;
      
     //Calculate INSS
-    INSS Calculate_INSS( float Gross_salary ){
+    INSS Calculate_INSS( float gross_salary ){
         INSS inss;
-        inss.Fee_amount = 0;
-        inss.Percentage_rate = 0;
-        if (Gross_salary <= Minimum_Salary)
+        inss.fee_amount = 0;
+        inss.percentage_rate = 0;
+        if (gross_salary <= Minimum_Salary)
         {
-            inss.Percentage_rate = 8;
-            inss.Fee_amount = Gross_salary * 0.08;
+            inss.percentage_rate = 8;
+            inss.fee_amount = gross_salary * 0.08;
         }
-        else if (Gross_salary <= Minimum_Salary * 5)
+        else if (gross_salary <= Minimum_Salary * 5)
         {
-            inss.Percentage_rate = 9;
-            inss.Fee_amount = Gross_salary * 0.09;
+            inss.percentage_rate = 9;
+            inss.fee_amount = gross_salary * 0.09;
         }
-        else if (Gross_salary <= Minimum_Salary * 10)
+        else if (gross_salary <= Minimum_Salary * 10)
         {
-            inss.Percentage_rate = 11;
-            inss.Fee_amount = Gross_salary * 0.11;
+            inss.percentage_rate = 11;
+            inss.fee_amount = gross_salary * 0.11;
         }
         else {
-            inss.Fee_amount = Minimum_Salary * 1.1;
-            inss.Percentage_rate = (inss.Fee_amount / Gross_salary) * 100.0f;
+            inss.fee_amount = Minimum_Salary * 1.1;
+            inss.percentage_rate = (inss.fee_amount / gross_salary) * 100.0f;
 
         }
             return inss;
     }
 
 
-
+    void ValidSalary (int gross_salary) {
+        
+        if (gross_salary < 0)
+        {
+           printf("the salary is invalid salary\n");
+        }
+        
+    }
 
 
 int main (void) {
+        PeopleInformation peopleinformation;
 
+        
+        printf("hi what is your name\n");
+    scanf("%99s", peopleinformation.Name);
+       printf("%s what is you gross salary\n", peopleinformation.Name);
+    scanf("%f", &peopleinformation.gross_salary);
+    INSS inss;
+    inss = Calculate_INSS(peopleinformation.gross_salary);
+    printf("You percentage rate is %.1f%% and fee amount is $%.1f\n", inss.percentage_rate, inss.fee_amount);
+    
+    return 0;
 }

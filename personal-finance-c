@@ -1,82 +1,96 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
-    //Minimum Salary
-    const float Minimum_Salary = 1621.0f;
+// Minimum Salary
+const float Minimum_Salary = 1621.0f;
 
-        //information of the people
-    typedef struct PeopleInformation
-    {
-        char Name[100];
-        float gross_salary;
-        float liquid_salary;
-    }PeopleInformation;
-    
-    /* INSS:The INSS is Brazil's public social security system that collects monthly contributions from workers 
-    to guarantee them income replacement, such as pensions, disability benefits, and maternity pay.*/
-    typedef struct INSS
-    {
-       float percentage_rate;
-       float fee_amount;
-    } INSS;
+// Information of the people
+typedef struct PeopleInformation
+{
+    char Name[100];
+    float gross_salary;
+    float liquid_salary;
+} PeopleInformation;
 
-    /*IRRF (Imposto de Renda Retido na Fonte) is a monthly Brazilian tax automatically deducted from an employee's
-     paycheck by the employer and paid directly to the government as an advance on their annual income tax.*/
-    typedef struct IRRF
-    {
-        float percentage_rate;
-        float fee_amount;
-    }IRRF;
+// INSS Struct
+typedef struct INSS
+{
+   float percentage_rate;
+   float fee_amount;
+} INSS;
+
+// IRRF Struct
+typedef struct IRRF
+{
+    float percentage_rate;
+    float fee_amount;
+} IRRF;
      
-    //Calculate INSS
-    INSS Calculate_INSS( float gross_salary ){
-        INSS inss;
-        inss.fee_amount = 0;
-        inss.percentage_rate = 0;
-        if (gross_salary <= Minimum_Salary)
-        {
-            inss.percentage_rate = 8;
-            inss.fee_amount = gross_salary * 0.08;
-        }
-        else if (gross_salary <= Minimum_Salary * 5)
-        {
-            inss.percentage_rate = 9;
-            inss.fee_amount = gross_salary * 0.09;
-        }
-        else if (gross_salary <= Minimum_Salary * 10)
-        {
-            inss.percentage_rate = 11;
-            inss.fee_amount = gross_salary * 0.11;
-        }
-        else {
-            inss.fee_amount = Minimum_Salary * 1.1;
-            inss.percentage_rate = (inss.fee_amount / gross_salary) * 100.0f;
-
-        }
-            return inss;
+// Calculate INSS
+INSS Calculate_INSS(float gross_salary) {
+    INSS inss;
+    inss.fee_amount = 0;
+    inss.percentage_rate = 0;
+    if (gross_salary <= Minimum_Salary)
+    {
+        inss.percentage_rate = 8;
+        inss.fee_amount = gross_salary * 0.08;
     }
-
-
-    void ValidSalary (int gross_salary) {
-        
-        if (gross_salary < 0)
-        {
-           printf("the salary is invalid salary\n");
-        }
-        
+    else if (gross_salary <= Minimum_Salary * 5)
+    {
+        inss.percentage_rate = 9;
+        inss.fee_amount = gross_salary * 0.09;
     }
+    else if (gross_salary <= Minimum_Salary * 10)
+    {
+        inss.percentage_rate = 11;
+        inss.fee_amount = gross_salary * 0.11;
+    }
+    else {
+        inss.fee_amount = Minimum_Salary * 1.1;
+        inss.percentage_rate = (inss.fee_amount / gross_salary) * 100.0f;
+    }
+    return inss;
+}
 
+int ValidSalary(float gross_salary) {
+    if (gross_salary < 0)
+    {
+       return 1;
+    }
+    else {
+       return 0;
+    }
+}
 
 int main (void) {
-        PeopleInformation peopleinformation;
+    PeopleInformation peopleinformation;
 
-        
-        printf("hi what is your name\n");
-    scanf("%99s", peopleinformation.Name);
-       printf("%s what is you gross salary\n", peopleinformation.Name);
-    scanf("%f", &peopleinformation.gross_salary);
-    INSS inss;
-    inss = Calculate_INSS(peopleinformation.gross_salary);
-    printf("You percentage rate is %.1f%% and fee amount is $%.1f\n", inss.percentage_rate, inss.fee_amount);
+    printf("hi what is your name\n");
+
+    fgets(peopleinformation.Name, sizeof(peopleinformation.Name), stdin);
+    peopleinformation.Name[strcspn(peopleinformation.Name, "\n")] = 0;
+
+    printf("%s what is you gross salary\n", peopleinformation.Name);
     
+    if (scanf("%f", &peopleinformation.gross_salary) != 1) {
+        printf("Error: Please enter a valid number!\n");
+        return 1;
+    }
+
+    if (ValidSalary(peopleinformation.gross_salary) == 1) { 
+        printf("Invalid salary (cannot be negative)\n");
+        return 1; 
+    }
+
+    INSS inss = Calculate_INSS(peopleinformation.gross_salary);
+
+    printf("You percentage rate is %.1f%% and fee amount is $%.1f\n", inss.percentage_rate, inss.fee_amount);
+
+    peopleinformation.liquid_salary = peopleinformation.gross_salary - inss.fee_amount;
+    
+    printf("The salary after INSS is %.2f\n", peopleinformation.liquid_salary);
+
     return 0;
 }
